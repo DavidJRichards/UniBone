@@ -46,9 +46,9 @@
 
 #include "panel.hpp"
 #include "demo_io.hpp"
+#include "DL11W.hpp"
 #include "demo_regs.hpp"
 #include "rl11.hpp"
-#include "rk11.hpp"
 #include "cpu.hpp"
 
 
@@ -72,6 +72,8 @@ void menus_c::menu_devices(void) {
 
 	// 2 demo controller
 	demo_io_c demo_io;
+	slu_c slu;
+	ltc_c ltc;
 	//demo_regs_c demo_regs; // mem at 160000: RT11 crashes?
 
 	cpu_c cpu;
@@ -81,12 +83,15 @@ void menus_c::menu_devices(void) {
 	cur_device = NULL;
 
 	paneldriver->reset(); // reset I2C, restart worker()
- 
-        // create RK11 + drives
-        rk11_c RK05;
- 
+
 	demo_io.install();
 	demo_io.worker_start();
+
+	slu.install();
+	slu.worker_start();
+
+	ltc.install();
+	ltc.worker_start();
 
 	//demo_regs.install();
 	//demo_regs.worker_start();
@@ -94,9 +99,6 @@ void menus_c::menu_devices(void) {
 	RL11.install();
 	RL11.connect_to_panel();
 	RL11.worker_start();
-
-        RK05.install();
-        RK05.worker_start();
 
 	cpu.install();
 	cpu.worker_start();
@@ -337,14 +339,17 @@ void menus_c::menu_devices(void) {
 	RL11.disconnect_from_panel();
 	RL11.uninstall();
 
-        RK05.worker_stop();
-        RK05.uninstall();
-
 	//demo_regs.worker_stop();
 	//demo_regs.uninstall();
 
 	demo_io.worker_stop();
 	demo_io.uninstall();
+
+	slu.worker_stop();
+	slu.uninstall();
+
+	ltc.worker_stop();
+	ltc.uninstall();
 
 	if (unibus->arbitration_active)
 		unibus->emulation_logic_stop(); // undo
