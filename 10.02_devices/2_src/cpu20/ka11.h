@@ -22,3 +22,4 @@ struct KA11
 //void run(KA11 *cpu);
 void reset(KA11 *cpu);
 void condstep(KA11 *cpu);
+void printstate(KA11 *cpu);

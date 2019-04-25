@@ -97,13 +97,13 @@ printstate(KA11 *cpu)
 	(void)cpu;
 	printf(" R0 %06o R1 %06o R2 %06o R3 %06o R4 %06o R5 %06o R6 %06o R7 %06o\n"
 		" 10 %06o 11 %06o 12 %06o 13 %06o 14 %06o 15 %06o 16 %06o 17 %06o\n"
-		" BA %06o IR %06o PSW %03o\n"
+		" BA %06o IR %06o PSW %03o N=%o Z=%o V=%o C=%o\n"
 		,
 		cpu->r[0], cpu->r[1], cpu->r[2], cpu->r[3],
 		cpu->r[4], cpu->r[5], cpu->r[6], cpu->r[7],
 		cpu->r[8], cpu->r[9], cpu->r[10], cpu->r[11],
 		cpu->r[12], cpu->r[13], cpu->r[14], cpu->r[15],
-		cpu->ba, cpu->ir, cpu->psw);
+		cpu->ba, cpu->ir, cpu->psw, cpu->psw&8, cpu->psw&4, cpu->psw&2, cpu->psw&1);
 }
 
 void
@@ -460,7 +460,7 @@ step(KA11 *cpu)
 		NZ; WR; SVC;
 	case 0006200:	TRB(ASR);
 		RD_U; c = ISSET(PSW_C); CLCV;
-		b = W(SR>>1) | SR&B15; if(SR & 1) SEC; BXT;
+		b = W(SR>>1) | (SR&B15); if(SR & 1) SEC; BXT;
 		if((PSW>>3^PSW)&1) SEV;
 		NZ; WR; SVC;
 	case 0006300:	TRB(ASL);
@@ -555,11 +555,15 @@ step(KA11 *cpu)
 ri:	TRAP(010);
 ill:	TRAP(4);
 be:	if(cpu->be > 1){
+    	tracestate(cpu); // djrm
 		printf("double bus error, HALT\n");
 		cpu->state = STATE_HALTED;
 		return;
 	}
-printf("bus error\n");
+printf("bus error (1)\n");
+	tracestate(cpu); // djrm
+	cpu->state = STATE_HALTED; //djrm
+
 	TRAP(4);
 
 trap:

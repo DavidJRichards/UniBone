@@ -38,8 +38,12 @@ extern "C" {
 class cpu_c: public unibusdevice_c {
 private:
 
+	unibusdevice_register_t *reg_R7;
 	//unibusdevice_register_t *switch_reg;
 	//unibusdevice_register_t *display_reg;
+	void regs2cpu(KA11 *cpu);
+	void cpu2regs(KA11 *cpu);
+	
 
 public:
 
@@ -50,6 +54,25 @@ public:
 	false, "1 = CPU running, 0 = halt");
 	parameter_bool_c init = parameter_bool_c(this, "init", "i",/*readonly*/
 	false, "1 = CPU initalizing");
+	parameter_bool_c step = parameter_bool_c(this, "step", "s",/*readonly*/
+	false, "1 = CPU single step");
+	
+	parameter_unsigned_c del = parameter_unsigned_c(this, "CPU step delay", "del", /*readonly*/	false, "", "%o", "CPU step delay", 32, 8);
+	parameter_bool_c bvec = parameter_bool_c(this, "bvec", "s",/*readonly*/ false, "1 = boot using vector 024");
+	parameter_unsigned_c spc = parameter_unsigned_c(this, "starting addr", "spc", /*readonly*/	false, "", "%o", "Internal state", 32, 8);	
+	parameter_unsigned_c brk = parameter_unsigned_c(this, "breakpoint addr", "brk", /*readonly*/	false, "", "%o", "Internal state", 32, 8);
+	
+	parameter_unsigned_c r0 = parameter_unsigned_c(this, "CPU Register R0", "r0", /*readonly*/	false, "", "%o", "Internal state", 32, 8);
+	parameter_unsigned_c r1 = parameter_unsigned_c(this, "CPU Register R1", "r1", /*readonly*/	false, "", "%o", "Internal state", 32, 8);
+	parameter_unsigned_c r2 = parameter_unsigned_c(this, "CPU Register R2", "r2", /*readonly*/	false, "", "%o", "Internal state", 32, 8);
+	parameter_unsigned_c r3 = parameter_unsigned_c(this, "CPU Register R3", "r3", /*readonly*/	false, "", "%o", "Internal state", 32, 8);
+	parameter_unsigned_c r4 = parameter_unsigned_c(this, "CPU Register R4", "r4", /*readonly*/	false, "", "%o", "Internal state", 32, 8);
+	parameter_unsigned_c r5 = parameter_unsigned_c(this, "CPU Register R5", "r5", /*readonly*/	false, "", "%o", "Internal state", 32, 8);
+	parameter_unsigned_c r6 = parameter_unsigned_c(this, "CPU Register R6/SP", "r6", /*readonly*/	false, "", "%o", "Internal state", 32, 8);
+	parameter_unsigned_c r7 = parameter_unsigned_c(this, "CPU Register R7/PC", "r7", /*readonly*/	false, "", "%o", "Internal state", 32, 8);
+	parameter_unsigned_c r10 = parameter_unsigned_c(this, "CPU Register R010/SR", "r10", /*readonly*/	false, "", "%o", "Internal state", 32, 8);
+	parameter_unsigned_c r11 = parameter_unsigned_c(this, "CPU Register R011/DR", "r11", /*readonly*/	false, "", "%o", "Internal state", 32, 8);
+	parameter_unsigned_c r12 = parameter_unsigned_c(this, "CPU Register R012/TV", "r12", /*readonly*/	false, "", "%o", "Internal state", 32, 8);
 
 
 	struct Bus bus ; // UNIBU Sinterface of CPU
