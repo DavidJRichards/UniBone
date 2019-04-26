@@ -1,0 +1,9 @@
+*.ihx
+*.map
+*.rel
+*.lst
+*.hex
+*.o
+*.rpt
+*.summary
+*.bak

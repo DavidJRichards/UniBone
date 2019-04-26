@@ -49,6 +49,7 @@
 #include "DL11W.hpp"
 #include "demo_regs.hpp"
 #include "rl11.hpp"
+#include "rk11.hpp"
 #include "cpu.hpp"
 
 
@@ -84,6 +85,9 @@ void menus_c::menu_devices(void) {
 
 	paneldriver->reset(); // reset I2C, restart worker()
 
+    // create RK11 + drives
+    rk11_c RK05;
+ 
 	demo_io.install();
 	demo_io.worker_start();
 
@@ -99,6 +103,9 @@ void menus_c::menu_devices(void) {
 	RL11.install();
 	RL11.connect_to_panel();
 	RL11.worker_start();
+
+    RK05.install();
+    RK05.worker_start();
 
 	cpu.install();
 	cpu.worker_start();
@@ -338,6 +345,9 @@ void menus_c::menu_devices(void) {
 	RL11.worker_stop();
 	RL11.disconnect_from_panel();
 	RL11.uninstall();
+
+    RK05.worker_stop();
+    RK05.uninstall();
 
 	//demo_regs.worker_stop();
 	//demo_regs.uninstall();

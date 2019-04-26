@@ -90,6 +90,8 @@ OBJECTS = $(OBJDIR)/application.o	\
 	$(OBJDIR)/ka11.o	\
 	$(OBJDIR)/rl0102.o	\
     $(OBJDIR)/rl11.o	\
+        $(OBJDIR)/rk11.o        \
+        $(OBJDIR)/rk05.o        \
 	$(OBJDIR)/storagedrive.o	\
     $(OBJDIR)/storagecontroller.o	\
     $(OBJDIR)/demo_io.o	\
@@ -190,19 +192,25 @@ $(OBJDIR)/rl0102.o :  $(DEVICE_SRC_DIR)/rl0102.cpp $(DEVICE_SRC_DIR)/rl0102.hpp
 $(OBJDIR)/rl11.o :  $(DEVICE_SRC_DIR)/rl11.cpp $(DEVICE_SRC_DIR)/rl11.hpp
 	$(CC) $(CCFLAGS) $< -o $@
 
+$(OBJDIR)/rk05.o :  $(DEVICE_SRC_DIR)/rk05.cpp $(DEVICE_SRC_DIR)/rk05.hpp
+	$(CC) $(CCFLAGS) $< -o $@
+
+$(OBJDIR)/rk11.o :  $(DEVICE_SRC_DIR)/rk11.cpp $(DEVICE_SRC_DIR)/rk11.hpp
+	$(CC) $(CCFLAGS) $< -o $@
+
 $(OBJDIR)/storagedrive.o :  $(BASE_SRC_DIR)/storagedrive.cpp $(BASE_SRC_DIR)/storagedrive.hpp
 	$(CC) $(CCFLAGS) $< -o $@
 
 $(OBJDIR)/storagecontroller.o :  $(BASE_SRC_DIR)/storagecontroller.cpp $(BASE_SRC_DIR)/storagecontroller.hpp
 	$(CC) $(CCFLAGS) $< -o $@
-
-$(OBJDIR)/demo_io.o :  $(DEVICE_SRC_DIR)/demo_io.cpp $(DEVICE_SRC_DIR)/demo_io.hpp
-	$(CC) $(CCFLAGS) $< -o $@
-
+	
 $(OBJDIR)/rs232.o :  $(DEVICE_SRC_DIR)/rs232.cpp $(DEVICE_SRC_DIR)/rs232.hpp
 	$(CC) $(CCFLAGS) $< -o $@
 	
 $(OBJDIR)/DL11W.o :  $(DEVICE_SRC_DIR)/DL11W.cpp $(DEVICE_SRC_DIR)/DL11W.hpp
+	$(CC) $(CCFLAGS) $< -o $@
+
+$(OBJDIR)/demo_io.o :  $(DEVICE_SRC_DIR)/demo_io.cpp $(DEVICE_SRC_DIR)/demo_io.hpp
 	$(CC) $(CCFLAGS) $< -o $@
 
 $(OBJDIR)/demo_regs.o :  $(DEVICE_SRC_DIR)/demo_regs.cpp $(DEVICE_SRC_DIR)/demo_regs.hpp
